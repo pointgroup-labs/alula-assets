@@ -2,15 +2,17 @@
 
 Static token registry for Alula DeFi.
 
-This repository stores token definitions and generates a static JSON registry plus token icons that can be served directly from GitHub Pages, a CDN, or any static hosting provider.
+This repository stores token metadata and token icons, then generates a static JSON registry that can be served from GitHub Pages, a CDN, or any static hosting provider.
 
 ## What It Does
 
-- Keeps token metadata in simple TypeScript files under `src/tokens`
-- Copies token icons into `data/img`
-- Generates `data/tokens.json`
-- Produces icon paths in `/img/...` format by default
-- Supports absolute icon URLs with `REGISTRY_BASE_URL`
+* Stores token definitions in TypeScript files under `src/tokens`
+* Stores source token icons under `src/img`
+* Copies token icons into `data/img`
+* Generates `data/tokens.json`
+* Supports both `testnet` and `mainnet` token addresses
+* Uses `/img/...` icon paths by default
+* Supports absolute icon URLs with `REGISTRY_BASE_URL`
 
 ## Registry Output
 
@@ -21,15 +23,27 @@ Each generated asset has this shape:
   "id": "aqua",
   "name": "AQUA",
   "symbol": "AQUA",
-  "token_address": "GAHPYWLK6YRN7CVYZOO4H3VDRZ7PVF5UJGLZCSPAEIKJE2XSWF5LAGER",
-  "icon": "/img/aqua.webp"
+  "decimals": 7,
+  "icon": "/img/aqua.webp",
+  "token_addresses": {
+    "testnet": "CDNVQW44C3HALYNVQ4SOBXY5EWYTGVYXX6JPESOLQDABJI5FC5LTRRUE",
+    "mainnet": "CAUIKL3IYGMERDRUN6YSCLWVAKIFG5Q4YJHUKM4S4NJZQIA3BAS6OJPK"
+  }
 }
 ```
 
 Generated files:
 
-- `data/tokens.json`
-- `data/img/*`
+```text
+data/
+  tokens.json
+  img/
+    *.webp
+    *.png
+    *.svg
+    *.jpg
+    *.jpeg
+```
 
 ## Project Structure
 
@@ -38,8 +52,10 @@ src/
   img/          # source token icons
   tokens/       # token definitions
   types/        # shared registry types
+
 scripts/
   build-json.ts # static registry generator
+
 data/
   tokens.json   # generated registry output
   img/          # generated icons for public serving
@@ -59,7 +75,7 @@ Generate the static registry:
 pnpm build
 ```
 
-Or run the generator directly:
+Or run the registry generator directly:
 
 ```bash
 pnpm build:registry
@@ -67,27 +83,73 @@ pnpm build:registry
 
 ## Add a New Token
 
-1. Add the icon file to `src/img`
+1. Add the token icon to `src/img`
 2. Create a new token file in `src/tokens`
 3. Export an `asset` object
 4. Run `pnpm build`
+5. Commit both the source token file and the generated `data/` output
 
 Example:
 
 ```ts
-import tokenIcon from '../img/example.webp';
-import { RegistryAsset } from '../types';
+import tokenIcon from '../img/example.webp'
+import { RegistryAsset } from '../types'
 
 export const asset: RegistryAsset = {
-    id: 'example',
-    name: 'Example Token',
-    symbol: 'EXM',
-    icon: tokenIcon,
-    token_address: 'GXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+  id: 'example',
+  name: 'Example Token',
+  symbol: 'EXM',
+  decimals: 7,
+  icon: tokenIcon,
+  token_addresses: {
+    testnet: 'CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    mainnet: 'CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+  },
 }
 ```
 
 After the build, the token is automatically included in `data/tokens.json`.
+
+## Token Addresses
+
+The `token_addresses` field should contain Soroban token contract addresses.
+
+These addresses usually start with `C`.
+
+```ts
+token_addresses: {
+  testnet: 'C...',
+  mainnet: 'C...',
+}
+```
+
+Do not put classic Stellar issuer addresses directly into `token_addresses`.
+
+For example, this is an issuer address:
+
+```text
+GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN
+```
+
+This should not be used as `token_addresses.mainnet`.
+
+Instead, use the corresponding Soroban Asset Contract address:
+
+```text
+CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75
+```
+
+## Decimals
+
+For Stellar classic assets wrapped through SAC, use:
+
+```ts
+decimals: 7
+```
+
+This applies to common Stellar assets such as USDC, EURC, AQUA, and XLM SAC tokens.
+
+For custom Soroban tokens, call the token contract `decimals()` method and use the returned value.
 
 ## Public Hosting
 
@@ -95,9 +157,9 @@ This repository is designed to be served as static content.
 
 Typical setup:
 
-- publish `data/tokens.json`
-- publish `data/img/*`
-- fetch the registry from your frontend
+* publish `data/tokens.json`
+* publish `data/img/*`
+* fetch the registry from your frontend
 
 Example fetch:
 
@@ -118,17 +180,52 @@ That will generate absolute icon URLs like:
 https://your-domain.com/img/aqua.webp
 ```
 
+Without `REGISTRY_BASE_URL`, icons are generated as relative public paths:
+
+```text
+/img/aqua.webp
+```
+
 ## Frontend Usage
 
-Your frontend only needs to:
+The frontend can load the registry once and use it to match token contract addresses with metadata.
 
-1. request the registry JSON
-2. render token metadata
-3. use the `icon` field directly in image tags
+Example:
+
+```ts
+type TokenItem = {
+  id: string
+  name: string
+  symbol: string
+  decimals: number
+  icon: string
+  token_addresses: {
+    testnet?: string
+    mainnet?: string
+  }
+}
+
+const response = await fetch('/tokens.json')
+const tokens = await response.json() as TokenItem[]
+```
+
+To find a token by address:
+
+```ts
+function getTokenByAddress(tokens: TokenItem[], address: string) {
+  return tokens.find(token =>
+    token.token_addresses.testnet === address ||
+    token.token_addresses.mainnet === address
+  )
+}
+```
 
 ## Notes
 
-- Token files are the source of truth
-- `data/` is generated output
-- The build script scans every `src/tokens/*.ts` file automatically
-- No manual registry index maintenance is required
+* Token files under `src/tokens` are the source of truth
+* `data/` is generated output
+* The build script scans every `src/tokens/*.ts` file automatically
+* `src/tokens/index.ts` is ignored by the build script
+* No manual registry index maintenance is required
+* Token icons are copied automatically during the build
+* Token addresses must be Soroban contract addresses, not issuer addresses

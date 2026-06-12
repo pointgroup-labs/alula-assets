@@ -9,6 +9,7 @@ type RegistryAsset = {
   name: string
   symbol: string
   icon: string
+  decimals: number
   token_addresses: Partial<Record<Network, string>>
 }
 
@@ -77,6 +78,7 @@ function buildRegistryAsset(filePath: string): BuildRegistryAsset {
     id: getStringProperty(assetBody, 'id', filePath),
     name: getStringProperty(assetBody, 'name', filePath),
     symbol: getStringProperty(assetBody, 'symbol', filePath),
+    decimals: getNumberProperty(assetBody, 'decimals', filePath, 7),
     icon: registryBaseUrl
       ? `${registryBaseUrl}/img/${iconFileName}`
       : `/img/${iconFileName}`,
@@ -195,6 +197,44 @@ function getOptionalStringProperty(
   return source.match(propertyMatcher)?.[1]
 }
 
+function getNumberProperty(
+  source: string,
+  propertyName: string,
+  filePath: string,
+  fallback?: number,
+): number {
+  const value = getOptionalNumberProperty(source, propertyName)
+
+  if (value === undefined) {
+    if (fallback !== undefined) {
+      return fallback
+    }
+
+    throw new Error(
+      `Unable to read "${propertyName}" in ${path.relative(projectRoot, filePath)}`,
+    )
+  }
+
+  return value
+}
+
+function getOptionalNumberProperty(
+  source: string,
+  propertyName: string,
+): number | undefined {
+  const propertyMatcher = new RegExp(
+    `${propertyName}\\s*:\\s*(\\d+)`,
+  )
+
+  const propertyMatch = source.match(propertyMatcher)
+
+  if (!propertyMatch) {
+    return undefined
+  }
+
+  return Number(propertyMatch[1])
+}
+
 function removeEmptyValues<T extends Record<string, string | undefined>>(
   object: T,
 ): Partial<Record<keyof T, string>> {
@@ -213,6 +253,10 @@ function validateTokens(tokens: BuildRegistryAsset[]) {
     }
 
     ids.add(token.id)
+
+    if (!Number.isInteger(token.decimals) || token.decimals < 0) {
+      throw new Error(`Invalid decimals for "${token.id}": ${token.decimals}`)
+    }
 
     if (!Object.keys(token.token_addresses).length) {
       throw new Error(`Asset "${token.id}" has no token addresses`)
