@@ -6,5 +6,8 @@ export const asset: RegistryAsset = {
     name: "USD Coin",
     symbol: "USDC",
     icon: tokenIcon,
-    token_address: "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA",
+    token_addresses: {
+        testnet: "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA",
+        mainnet: "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75",
+    }
 }

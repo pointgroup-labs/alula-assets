@@ -3,5 +3,8 @@ export type RegistryAsset = {
     name: string;
     symbol: string;
     icon: string;
-    token_address: string;
+    token_addresses: {
+        testnet: string;
+        mainnet: string;
+    };
 }
