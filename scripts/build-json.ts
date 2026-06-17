@@ -10,6 +10,7 @@ type RegistryAsset = {
   symbol: string
   icon: string
   decimals: number
+  asset_issuer?: string
   token_addresses: Partial<Record<Network, string>>
 }
 
@@ -82,6 +83,7 @@ function buildRegistryAsset(filePath: string): BuildRegistryAsset {
     icon: registryBaseUrl
       ? `${registryBaseUrl}/img/${iconFileName}`
       : `/img/${iconFileName}`,
+    asset_issuer: getStringProperty(assetBody, 'asset_issuer', filePath),
     token_addresses: removeEmptyValues(tokenAddresses),
     iconFileName,
     iconSourcePath,
@@ -177,7 +179,7 @@ function getStringProperty(
 ): string {
   const value = getOptionalStringProperty(source, propertyName)
 
-  if (!value) {
+  if (!value && value !== '') {
     throw new Error(
       `Unable to read "${propertyName}" in ${path.relative(projectRoot, filePath)}`,
     )
