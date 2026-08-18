@@ -9,7 +9,7 @@ This repository stores token metadata and token icons, then generates a static J
 * Stores token definitions in TypeScript files under `src/tokens`
 * Stores source token icons under `src/img`
 * Copies token icons into `data/img`
-* Generates `data/tokens.json`
+* Generates `data/token-list.json`
 * Supports both `testnet` and `mainnet` token addresses
 * Uses `/img/...` icon paths by default
 * Supports absolute icon URLs with `REGISTRY_BASE_URL`
@@ -36,7 +36,7 @@ Generated files:
 
 ```text
 data/
-  tokens.json
+  token-list.json
   img/
     *.webp
     *.png
@@ -57,7 +57,7 @@ scripts/
   build-json.ts # static registry generator
 
 data/
-  tokens.json   # generated registry output
+  token-list.json   # generated registry output
   img/          # generated icons for public serving
 ```
 
@@ -108,7 +108,7 @@ export const asset: RegistryAsset = {
 }
 ```
 
-After the build, the token is automatically included in `data/tokens.json`.
+After the build, the token is automatically included in `data/token-list.json`.
 
 ## Token Addresses
 
@@ -157,14 +157,14 @@ This repository is designed to be served as static content.
 
 Typical setup:
 
-* publish `data/tokens.json`
+* publish `data/token-list.json`
 * publish `data/img/*`
 * fetch the registry from your frontend
 
 Example fetch:
 
 ```ts
-const response = await fetch('https://your-domain.com/tokens.json')
+const response = await fetch('https://your-domain.com/token-list.json')
 const tokens = await response.json()
 ```
 
@@ -205,7 +205,7 @@ type TokenItem = {
   }
 }
 
-const response = await fetch('/tokens.json')
+const response = await fetch('/token-list.json')
 const tokens = await response.json() as TokenItem[]
 ```
 

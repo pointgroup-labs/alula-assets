@@ -49,11 +49,11 @@ for (const token of tokens) {
 const registry = tokens.map(({ iconFileName, iconSourcePath, ...asset }) => asset)
 
 fs.writeFileSync(
-  path.join(outputDir, 'tokens.json'),
+  path.join(outputDir, 'token-list.json'),
   `${JSON.stringify(registry, null, 2)}\n`,
 )
 
-console.log(`Generated ${registry.length} assets in data/tokens.json`)
+console.log(`Generated ${registry.length} assets in data/token-list.json`)
 
 function buildRegistryAsset(filePath: string): BuildRegistryAsset {
   const source = fs.readFileSync(filePath, 'utf8')
