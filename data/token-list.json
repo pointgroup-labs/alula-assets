@@ -45,18 +45,6 @@
     }
   },
   {
-    "id": "native",
-    "name": "stellar",
-    "symbol": "XLM",
-    "decimals": 7,
-    "icon": "/img/xlm.webp",
-    "asset_issuer": "stellar",
-    "token_addresses": {
-      "testnet": "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC",
-      "mainnet": "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA"
-    }
-  },
-  {
     "id": "USDC",
     "name": "USD Coin",
     "symbol": "USDC",
@@ -66,6 +54,18 @@
     "token_addresses": {
       "testnet": "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA",
       "mainnet": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75"
+    }
+  },
+  {
+    "id": "native",
+    "name": "stellar",
+    "symbol": "XLM",
+    "decimals": 7,
+    "icon": "/img/xlm.webp",
+    "asset_issuer": "stellar",
+    "token_addresses": {
+      "testnet": "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC",
+      "mainnet": "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA"
     }
   },
   {
