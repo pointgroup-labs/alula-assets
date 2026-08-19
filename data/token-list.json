@@ -49,7 +49,7 @@
     "name": "stellar",
     "symbol": "XLM",
     "decimals": 7,
-    "icon": "/img/stellar.webp",
+    "icon": "/img/xlm.webp",
     "asset_issuer": "stellar",
     "token_addresses": {
       "testnet": "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC",

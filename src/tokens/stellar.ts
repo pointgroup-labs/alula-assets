@@ -1,4 +1,4 @@
-import tokenIcon from '../img/stellar.webp';
+import tokenIcon from '../img/xlm.webp';
 import { RegistryAsset } from '../types';
 
 export const asset: RegistryAsset = {
