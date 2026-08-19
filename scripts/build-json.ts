@@ -83,7 +83,7 @@ function buildRegistryAsset(filePath: string): BuildRegistryAsset {
     icon: registryBaseUrl
       ? `${registryBaseUrl}/img/${iconFileName}`
       : `/img/${iconFileName}`,
-    asset_issuer: getStringProperty(assetBody, 'asset_issuer', filePath),
+    asset_issuer: getOptionalStringProperty(assetBody, 'asset_issuer'),
     token_addresses: removeEmptyValues(tokenAddresses),
     iconFileName,
     iconSourcePath,

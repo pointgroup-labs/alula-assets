@@ -35,6 +35,16 @@
     }
   },
   {
+    "id": "solvbtc",
+    "name": "Solv BTC",
+    "symbol": "SolvBTC",
+    "decimals": 8,
+    "icon": "/img/solvbtc.webp",
+    "token_addresses": {
+      "mainnet": "CBIJBDNZNF4X35BJ4FFZWCDBSCKOP5NB4PLG4SNENRMLAPYG4P5FM6VN"
+    }
+  },
+  {
     "id": "native",
     "name": "stellar",
     "symbol": "XLM",
