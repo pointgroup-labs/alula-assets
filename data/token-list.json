@@ -67,5 +67,15 @@
       "testnet": "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA",
       "mainnet": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75"
     }
+  },
+  {
+    "id": "xsolvbtc",
+    "name": "xSolvBTC",
+    "symbol": "xSolvBTC",
+    "decimals": 8,
+    "icon": "/img/xsolvbtc.webp",
+    "token_addresses": {
+      "mainnet": "CAUP7NFABXE5TJRL3FKTPMWRLC7IAXYDCTHQRFSCLR5TMGKHOOQO772J"
+    }
   }
 ]
