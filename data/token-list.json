@@ -24,6 +24,17 @@
     }
   },
   {
+    "id": "pyusd",
+    "name": "PayPal USD",
+    "symbol": "PYUSD",
+    "decimals": 7,
+    "icon": "/img/pyusd.webp",
+    "asset_issuer": "GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5",
+    "token_addresses": {
+      "mainnet": "CCCRWH6Q3FNP3I2I57BDLM5AFAT7O6OF6GKQOC6SSJNDAVRZ57SPHGU2"
+    }
+  },
+  {
     "id": "native",
     "name": "stellar",
     "symbol": "XLM",

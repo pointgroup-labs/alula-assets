@@ -6,7 +6,7 @@ export type RegistryAsset = {
     decimals: number;
     asset_issuer: string;
     token_addresses: {
-        testnet: string;
+        testnet?: string;
         mainnet: string;
     };
 }
